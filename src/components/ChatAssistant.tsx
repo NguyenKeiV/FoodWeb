@@ -2,15 +2,15 @@ import React, { useState, useEffect, useRef } from 'react';
 import { MessageCircle, Send, Minimize2, Loader2 } from 'lucide-react';
 import axios from 'axios';
 import { ChatMessage } from '../types/type';
-import knowledgeRaw from '../constants/knowledge.txt?raw';
+import knowledgeRaw from '../constants/knowledge.txt';
 
 const ChatAssistant: React.FC = () => {
   const [isChatOpen, setIsChatOpen] = useState(false);
   const [chatMessages, setChatMessages] = useState<ChatMessage[]>([
-    { 
-      id: 1, 
-      text: "Xin chào! Tôi là trợ lý NutriJour. Tôi có thể giúp bạn tìm bữa ăn đêm lành mạnh hoàn hảo, tư vấn dinh dưỡng, hoặc hỗ trợ đặt hàng. Bạn cần hỗ trợ gì hôm nay?", 
-      sender: 'bot' 
+    {
+      id: 1,
+      text: "Xin chào! Tôi là trợ lý NutriJour. Tôi có thể giúp bạn tìm bữa ăn đêm lành mạnh hoàn hảo, tư vấn dinh dưỡng, hoặc hỗ trợ đặt hàng. Bạn cần hỗ trợ gì hôm nay?",
+      sender: 'bot'
     }
   ]);
   const [currentMessage, setCurrentMessage] = useState('');
@@ -40,12 +40,12 @@ const ChatAssistant: React.FC = () => {
   const sendMessage = async () => {
     if (!currentMessage.trim() || loading) return;
 
-    const userMessage: ChatMessage = { 
-      id: Date.now(), 
-      text: currentMessage, 
-      sender: 'user' 
+    const userMessage: ChatMessage = {
+      id: Date.now(),
+      text: currentMessage,
+      sender: 'user'
     };
-    
+
     setChatMessages(prev => [...prev, userMessage]);
     setCurrentMessage('');
     setLoading(true);
@@ -96,15 +96,15 @@ const ChatAssistant: React.FC = () => {
         }
       );
 
-      const botReply = response.data?.candidates?.[0]?.content?.parts?.[0]?.text || 
+      const botReply = response.data?.candidates?.[0]?.content?.parts?.[0]?.text ||
         "Xin lỗi, tôi không thể trả lời lúc này. Vui lòng thử lại sau hoặc liên hệ hotline 1900-NUTRI.";
-      
-      const botMessage: ChatMessage = { 
-        id: Date.now() + 1, 
-        text: botReply, 
-        sender: 'bot' 
+
+      const botMessage: ChatMessage = {
+        id: Date.now() + 1,
+        text: botReply,
+        sender: 'bot'
       };
-      
+
       setChatMessages(prev => [...prev, botMessage]);
     } catch (error) {
       console.error('Chat API Error:', error);
@@ -168,17 +168,16 @@ const ChatAssistant: React.FC = () => {
                 className={`flex ${message.sender === 'user' ? 'justify-end' : 'justify-start'}`}
               >
                 <div
-                  className={`max-w-xs px-4 py-2 rounded-2xl text-sm leading-relaxed ${
-                    message.sender === 'user'
-                      ? 'bg-gradient-to-r from-lime-500 to-emerald-500 text-white'
-                      : 'bg-white text-gray-800 shadow-sm border border-gray-100'
-                  }`}
+                  className={`max-w-xs px-4 py-2 rounded-2xl text-sm leading-relaxed ${message.sender === 'user'
+                    ? 'bg-gradient-to-r from-lime-500 to-emerald-500 text-white'
+                    : 'bg-white text-gray-800 shadow-sm border border-gray-100'
+                    }`}
                 >
                   {message.text}
                 </div>
               </div>
             ))}
-            
+
             {loading && (
               <div className="flex justify-start">
                 <div className="bg-white text-gray-800 shadow-sm border border-gray-100 px-4 py-2 rounded-2xl text-sm flex items-center space-x-2">

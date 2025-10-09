@@ -5,7 +5,7 @@ import FullMenu from './pages/FullMenu';
 
 function App() {
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen">
       <Routes>
         <Route path="/" element={<LandingPage />} />
         <Route path="/menu" element={<FullMenu />} />

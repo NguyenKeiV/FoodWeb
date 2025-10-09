@@ -1,84 +1,82 @@
-import React, { useState } from 'react';
-import { Menu, X, Leaf } from 'lucide-react';
-import { navigationItems } from '../data/data';
+import "boxicons/css/boxicons.min.css";
+const Header = () => {
+  //tonggle mobile menu
+  const toggleMobileMenu = () => {
+    const mobileMenu = document.getElementById("mobileMenu");
+    if (mobileMenu?.classList.contains("hidden")) {
+      mobileMenu?.classList.remove("hidden");
+    } else {
+      mobileMenu?.classList.add("hidden");
+    }
+  }
 
-interface HeaderProps {
-  onNavigate: (sectionId: string) => void;
-}
-
-const Header: React.FC<HeaderProps> = ({ onNavigate }) => {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-
-  const toggleMenu = () => {
-    setIsMenuOpen(!isMenuOpen);
-  };
-
-  const handleNavigation = (href: string) => {
-    const sectionId = href.replace('#', '');
-    onNavigate(sectionId);
-    setIsMenuOpen(false);
-  };
 
   return (
-    <header className="bg-white/95 backdrop-blur-sm shadow-sm fixed w-full top-0 z-40">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center h-16">
-          <div className="flex items-center">
-            <div className="flex-shrink-0 flex items-center">
-              <Leaf className="h-8 w-8 text-lime-600" />
-              <span className="ml-2 text-2xl font-bold bg-gradient-to-r from-lime-600 to-emerald-600 bg-clip-text text-transparent">
-                NutriJour
-              </span>
-            </div>
-          </div>
-          
-          {/* Desktop Navigation */}
-          <nav className="hidden md:flex items-center space-x-8">
-            {navigationItems.map((item) => (
-              <button
-                key={item.label}
-                onClick={() => handleNavigation(item.href)}
-                className="text-gray-700 hover:text-lime-600 transition-colors duration-200 font-medium"
-              >
-                {item.label}
-              </button>
-            ))}
-            <button className="bg-gradient-to-r from-lime-500 to-emerald-500 text-white px-6 py-2 rounded-full hover:from-lime-600 hover:to-emerald-600 transition-all duration-200 font-medium shadow-lg hover:shadow-xl transform hover:-translate-y-0.5">
-              Đặt hàng ngay
-            </button>
-          </nav>
+    <header className=" flex justify-between items-center py-4 px-4 lg:px-20 ">
+      <h1 className="text-3xl md:text-4xl lg:text-5xl font-light m-0 z-50 text-white">
+        Nutrijour
+      </h1>
+      <nav className=" hidden md:flex items-center gap-12 ">
+        <a
+          className="text-base tracking-wider  hover: text-gray-300 z-50 hover:scale-[120%]  duration-300  hover:shadow-xl transform hover:-translate-y-1 rounded-full px-3"
+          href="#"
+        >
+          {" "}
+          LỊCH SỬ MUA HÀNG
+        </a>
+        <a
+          className="text-base tracking-wider  hover: text-gray-300 z-50 hover:scale-[120%]  duration-300  hover:shadow-xl transform hover:-translate-y-1 rounded-full px-3"
+          href="#"
+        >
+          {" "}
+          MENU
+        </a>
+        <a
+          className="text-base tracking-wider  hover: text-gray-300 z-50 hover:scale-[120%]  duration-300  hover:shadow-xl transform hover:-translate-y-1 rounded-full px-3"
+          href="#"
+        >
+          {" "}
+          GIỎ HÀNG
+        </a>
+      </nav>
 
-          {/* Mobile menu button */}
-          <div className="md:hidden">
-            <button
-              onClick={toggleMenu}
-              className="text-gray-700 hover:text-lime-600 transition-colors duration-200"
-            >
-              {isMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
-            </button>
-          </div>
-        </div>
+
+      <button
+        className=" hidden md:block relative border-none  px-12 py-4 m-2 text-white uppercase rounded-full shadow-[0_0_20px_#eee] transition-all duration-500 cursor-pointer bg-[linear-gradient(to_right,#1F1C2C_0%,#928DAB_51%,#1F1C2C_100%)] bg-[length:200%_auto] hover:[background-position:right_center] z-50"
+      >
+        ĐĂNG NHẶP
+      </button>
+
+      {/* mobile */}
+      <button onClick={toggleMobileMenu} className="md:hidden text-4xl text-white p-2 z-50">
+        <img className="size-9" src="/image/menu.png" alt="" />
+      </button>
+
+      <div id="mobileMenu" className="hidden fixed top-16 bottom-0 right-0 left-0 md:hidden pt-3 z-40 bg-black/15 backdrop-blur-md">
+        <nav className="flex flex-col gap-6 items-center">
+          <a
+            className="text-base tracking-wider transition-colors hover: text-gray-300 z-50"
+            href="#"
+          >
+            {" "}
+            LỊCH SỬ MUA HÀNG
+          </a>
+          <a
+            className="text-base tracking-wider transition-colors hover: text-gray-300 z-50"
+            href="#"
+          >
+            {" "}
+            MENU
+          </a>
+          <a
+            className="text-base tracking-wider transition-colors hover: text-gray-300 z-50"
+            href="#"
+          >
+            {" "}
+            GIỎ HÀNG
+          </a>
+        </nav>
       </div>
-
-      {/* Mobile Navigation */}
-      {isMenuOpen && (
-        <div className="md:hidden bg-white/95 backdrop-blur-sm border-t">
-          <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
-            {navigationItems.map((item) => (
-              <button
-                key={item.label}
-                onClick={() => handleNavigation(item.href)}
-                className="block px-3 py-2 text-gray-700 hover:text-lime-600 transition-colors duration-200 w-full text-left font-medium"
-              >
-                {item.label}
-              </button>
-            ))}
-            <button className="w-full bg-gradient-to-r from-lime-500 to-emerald-500 text-white px-6 py-2 rounded-full hover:from-lime-600 hover:to-emerald-600 transition-all duration-200 font-medium mt-4 shadow-lg">
-              Đặt hàng ngay
-            </button>
-          </div>
-        </div>
-      )}
     </header>
   );
 };

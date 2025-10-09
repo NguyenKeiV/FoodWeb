@@ -3,6 +3,7 @@ import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { featuredProducts, beverageProducts } from '../data/data';
 import ProductCard from './ProductCard';
 
+
 interface ProductsProps {
   onViewFullMenu?: () => void;
 }
@@ -18,10 +19,10 @@ const Products: React.FC<ProductsProps> = ({ onViewFullMenu }) => {
     if (scrollContainerRef.current) {
       const scrollAmount = 320; // Width of card + gap
       const currentScroll = scrollContainerRef.current.scrollLeft;
-      const targetScroll = direction === 'left' 
-        ? currentScroll - scrollAmount 
+      const targetScroll = direction === 'left'
+        ? currentScroll - scrollAmount
         : currentScroll + scrollAmount;
-      
+
       scrollContainerRef.current.scrollTo({
         left: targetScroll,
         behavior: 'smooth'
@@ -32,11 +33,11 @@ const Products: React.FC<ProductsProps> = ({ onViewFullMenu }) => {
   // Mouse drag handlers
   const handleMouseDown = useCallback((e: React.MouseEvent) => {
     if (!scrollContainerRef.current) return;
-    
+
     setIsDragging(true);
     setStartX(e.pageX - scrollContainerRef.current.offsetLeft);
     setScrollLeft(scrollContainerRef.current.scrollLeft);
-    
+
     // Add cursor grabbing style
     scrollContainerRef.current.style.cursor = 'grabbing';
     scrollContainerRef.current.style.userSelect = 'none';
@@ -44,7 +45,7 @@ const Products: React.FC<ProductsProps> = ({ onViewFullMenu }) => {
 
   const handleMouseLeave = useCallback(() => {
     if (!scrollContainerRef.current) return;
-    
+
     setIsDragging(false);
     scrollContainerRef.current.style.cursor = 'grab';
     scrollContainerRef.current.style.userSelect = 'auto';
@@ -52,7 +53,7 @@ const Products: React.FC<ProductsProps> = ({ onViewFullMenu }) => {
 
   const handleMouseUp = useCallback(() => {
     if (!scrollContainerRef.current) return;
-    
+
     setIsDragging(false);
     scrollContainerRef.current.style.cursor = 'grab';
     scrollContainerRef.current.style.userSelect = 'auto';
@@ -60,7 +61,7 @@ const Products: React.FC<ProductsProps> = ({ onViewFullMenu }) => {
 
   const handleMouseMove = useCallback((e: React.MouseEvent) => {
     if (!isDragging || !scrollContainerRef.current) return;
-    
+
     e.preventDefault();
     const x = e.pageX - scrollContainerRef.current.offsetLeft;
     const walk = (x - startX) * 2; // Multiply by 2 for faster scrolling
@@ -77,37 +78,35 @@ const Products: React.FC<ProductsProps> = ({ onViewFullMenu }) => {
             Thực Đơn Đêm Phổ Biến
           </h2>
           <p className="text-xl text-gray-600 max-w-2xl mx-auto mb-8">
-            Những lựa chọn ăn đêm lành mạnh được yêu thích nhất của chúng tôi, được chế biến bởi 
+            Những lựa chọn ăn đêm lành mạnh được yêu thích nhất của chúng tôi, được chế biến bởi
             các chuyên gia dinh dưỡng và được những người quan tâm đến sức khỏe yêu thích.
           </p>
-          
+
           {/* Tab Navigation */}
           <div className="flex justify-center mb-12">
             <div className="bg-white rounded-full p-1 shadow-lg">
               <button
                 onClick={() => setActiveTab('food')}
-                className={`px-8 py-3 rounded-full font-medium transition-all duration-200 ${
-                  activeTab === 'food'
-                    ? 'bg-gradient-to-r from-lime-500 to-emerald-500 text-white shadow-lg'
-                    : 'text-gray-600 hover:text-lime-600'
-                }`}
+                className={`px-8 py-3 rounded-full font-medium transition-all duration-200 ${activeTab === 'food'
+                  ? 'bg-gradient-to-r from-lime-500 to-emerald-500 text-white shadow-lg'
+                  : 'text-gray-600 hover:text-lime-600'
+                  }`}
               >
                 Món chính
               </button>
               <button
                 onClick={() => setActiveTab('beverages')}
-                className={`px-8 py-3 rounded-full font-medium transition-all duration-200 ${
-                  activeTab === 'beverages'
-                    ? 'bg-gradient-to-r from-lime-500 to-emerald-500 text-white shadow-lg'
-                    : 'text-gray-600 hover:text-lime-600'
-                }`}
+                className={`px-8 py-3 rounded-full font-medium transition-all duration-200 ${activeTab === 'beverages'
+                  ? 'bg-gradient-to-r from-lime-500 to-emerald-500 text-white shadow-lg'
+                  : 'text-gray-600 hover:text-lime-600'
+                  }`}
               >
                 Nước ép tươi
               </button>
             </div>
           </div>
         </div>
-        
+
         {/* Horizontal Scroll Container */}
         <div className="relative">
           {/* Left Arrow */}
@@ -134,8 +133,7 @@ const Products: React.FC<ProductsProps> = ({ onViewFullMenu }) => {
             className="flex gap-6 overflow-x-auto scrollbar-hide pb-4 px-4 md:px-12 cursor-grab active:cursor-grabbing"
             style={{
               scrollbarWidth: 'none',
-              msOverflowStyle: 'none',
-              WebkitScrollbar: { display: 'none' }
+              msOverflowStyle: 'none'
             }}
             onMouseDown={handleMouseDown}
             onMouseLeave={handleMouseLeave}
@@ -159,9 +157,9 @@ const Products: React.FC<ProductsProps> = ({ onViewFullMenu }) => {
             ))}
           </div>
         </div>
-        
+
         <div className="text-center mt-12">
-          <button 
+          <button
             onClick={onViewFullMenu}
             className="bg-gradient-to-r from-lime-500 to-emerald-500 text-white px-8 py-4 rounded-full hover:from-lime-600 hover:to-emerald-600 transition-all duration-200 font-medium text-lg shadow-lg hover:shadow-xl transform hover:-translate-y-1"
           >
