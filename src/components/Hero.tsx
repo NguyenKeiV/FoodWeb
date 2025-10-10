@@ -11,13 +11,13 @@ const Hero = () => {
 
   return (
     <div className="relative h-screen w-full">
-      <div className="container mx-auto h-full px-1 lg-px-2">
-        <div className="grid grid-cols-1 lg:grid-cols-7 gap-8 h-full items-start pt-14 lg:pt-28">
+      <div className="container mx-56 h-full px-1 lg-px-2">
+        <div className="grid grid-cols-1 lg:grid-cols-7 gap-8 h-full items-start pt-14 lg:pt-10">
           {/* Left Side - Content */}
-          <div className="lg:col-span-3 flex flex-col justify-start gap-4 z-10 relative">
+          <div className="lg:col-span-3 flex flex-col justify-start gap-4 z-10 relative lg:pt-14">
             {/* Hero Title */}
-            <div className="space-y-16">
-              <div className="text-white space-y-6 flex flex-wrap items-baseline gap-x-4">
+            <div className="space-y-10">
+              <div className="text-white space-y-4 flex flex-wrap items-baseline gap-x-4">
                 <h1 className="text-5xl lg:text-6xl xl:text-7xl font-light leading-tight">
                   Mang đến món ăn
                 </h1>
@@ -37,7 +37,7 @@ const Hero = () => {
             </div>
 
             {/* Description */}
-            <p className="text-xl lg:text-2xl text-white/90 leading-relaxed max-w-3xl pt-7">
+            <p className="text-xl lg:text-2xl text-white/90 leading-relaxed max-w-3xl pt-10">
               Chúng tôi chuyên phục vụ các món ăn bổ dưỡng, ngon miệng cho sinh viên và người đi làm muộn.
               Giao hàng nhanh chóng, đảm bảo vệ sinh an toàn thực phẩm, mang đến bữa ăn đêm ấm áp và tiện lợi.
             </p>
@@ -54,7 +54,7 @@ const Hero = () => {
           </div>
 
           {/* Right Side - 3D Spoon */}
-          <div className="lg:col-span-4 relative h-full flex items-center justify-center overflow-visible">
+          <div className="lg:col-span-4 relative h-full flex items-start justify-center overflow-auto :hidden">
             <div className="w-full h-full pointer-events-auto">
               <Spline
                 key={key}

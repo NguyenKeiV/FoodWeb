@@ -12,7 +12,7 @@ const LandingPage: React.FC = () => {
     <main className="relative w-full h-screen overflow-hidden bg-gradient-to-br from-emerald-800 via-teal-600 to-emerald-900">
       <Header />
       <Hero />
-
+      <ChatAssistant />
     </main>
   );
 };
