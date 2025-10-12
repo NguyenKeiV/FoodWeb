@@ -18,21 +18,21 @@ const Header = () => {
       </h1>
       <nav className=" hidden md:flex items-center gap-12 ">
         <a
-          className="text-base tracking-wider  hover: text-gray-300 z-50 hover:scale-[120%]  duration-300  hover:shadow-xl transform hover:-translate-y-1 rounded-full px-3"
+          className="text-base tracking-wider  hover: text-gray-300 z-50 hover:scale-[120%]  duration-300   transform hover:-translate-y-1 rounded-full px-3"
           href="#"
         >
           {" "}
           LỊCH SỬ MUA HÀNG
         </a>
         <a
-          className="text-base tracking-wider  hover: text-gray-300 z-50 hover:scale-[120%]  duration-300  hover:shadow-xl transform hover:-translate-y-1 rounded-full px-3"
+          className="text-base tracking-wider  hover: text-gray-300 z-50 hover:scale-[120%]  duration-300   transform hover:-translate-y-1 rounded-full px-3"
           href="#"
         >
           {" "}
           MENU
         </a>
         <a
-          className="text-base tracking-wider  hover: text-gray-300 z-50 hover:scale-[120%]  duration-300  hover:shadow-xl transform hover:-translate-y-1 rounded-full px-3"
+          className="text-base tracking-wider  hover: text-gray-300 z-50 hover:scale-[120%]  duration-300   transform hover:-translate-y-1 rounded-full px-3"
           href="#"
         >
           {" "}
@@ -52,7 +52,7 @@ const Header = () => {
         <img className="size-9" src="/image/menu.png" alt="" />
       </button>
 
-      <div id="mobileMenu" className="hidden fixed top-16 bottom-0 right-0 left-0 md:hidden pt-3 z-40 bg-black/15 backdrop-blur-md">
+      <div id="mobileMenu" className="hidden fixed top-16 bottom-0 right-0 left-0 md:hidden pt-3 z-40 bg-black/15 ">
         <nav className="flex flex-col gap-6 items-center">
           <a
             className="text-base tracking-wider transition-colors hover: text-gray-300 z-50"
