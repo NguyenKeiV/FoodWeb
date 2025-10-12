@@ -23,7 +23,7 @@ const LandingPage: React.FC = () => {
           <Hero />
         </section>
 
-        <section className="w-screen h-screen flex-shrink-0 flex items-center justify-center">
+        <section id="menu" className="w-screen h-screen flex-shrink-0 flex items-center justify-center">
           <Products />
         </section>
 

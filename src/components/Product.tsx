@@ -53,6 +53,33 @@ const productsData: Product[] = [
     description: "Bánh mì sandwich với bơ và trứng",
     category: "food"
   },
+  {
+    id: 9,
+    name: "Salad ức gà",
+    price: 65000,
+    quantity: 15,
+    image: "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=500&h=500&fit=crop",
+    description: "Salad tươi ngon với ức gà nướng",
+    category: "food"
+  },
+  {
+    id: 11,
+    name: "Salad ức gà",
+    price: 65000,
+    quantity: 15,
+    image: "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=500&h=500&fit=crop",
+    description: "Salad tươi ngon với ức gà nướng",
+    category: "food"
+  },
+  {
+    id: 12,
+    name: "Salad ức gà",
+    price: 65000,
+    quantity: 15,
+    image: "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=500&h=500&fit=crop",
+    description: "Salad tươi ngon với ức gà nướng",
+    category: "food"
+  },
   // ĐỒ UỐNG
   {
     id: 5,
@@ -322,8 +349,8 @@ const Products: React.FC = () => {
             onClick={() => goToSlide(currentIndex + (index - getActualIndex(currentIndex)))}
             disabled={isAnimating}
             className={`h-2 rounded-full transition-all duration-300 ${index === getActualIndex(currentIndex)
-                ? 'w-8 bg-white'
-                : 'w-2 bg-white/40 hover:bg-white/60'
+              ? 'w-8 bg-white'
+              : 'w-2 bg-white/40 hover:bg-white/60'
               }`}
           />
         ))}
