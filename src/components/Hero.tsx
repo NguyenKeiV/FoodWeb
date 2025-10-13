@@ -12,9 +12,9 @@ const Hero = () => {
   return (
     <div className="relative h-screen w-full">
       <div className="container mx-56 h-full px-1 lg-px-2">
-        <div className="grid grid-cols-1 lg:grid-cols-7 gap-8 h-full items-start pt-14 lg:pt-10">
+        <div className="grid grid-cols-1 lg:grid-cols-7 gap-8 h-full items-start lg:mt-20">
           {/* Left Side - Content */}
-          <div className="lg:col-span-3 flex flex-col justify-start gap-4 z-10 relative lg:pt-14">
+          <div className="lg:col-span-3 flex flex-col justify-start gap-4 z-10 relative lg:pt-10">
             {/* Hero Title */}
             <div className="space-y-10">
               <div className="text-white space-y-4 flex flex-wrap items-baseline gap-x-4">

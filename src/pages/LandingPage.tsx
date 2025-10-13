@@ -5,6 +5,7 @@ import About from "../components/About";
 import Products from "../components/Product";
 import ChatAssistant from "../components/ChatAssistant";
 import useHorizontalScroll from "../hook/useHorizontalScroll";
+import Footer from "../components/Footer";
 const LandingPage: React.FC = () => {
   useHorizontalScroll("scrollContainer");
   return (
@@ -19,7 +20,7 @@ const LandingPage: React.FC = () => {
         id="scrollContainer"
       >
         {/* Mỗi section = 1 màn hình */}
-        <section className="w-screen h-screen flex-shrink-0 flex items-center justify-center">
+        <section id="hero" className="w-screen h-screen flex-shrink-0 flex items-center justify-center">
           <Hero />
         </section>
 
@@ -28,6 +29,7 @@ const LandingPage: React.FC = () => {
         </section>
 
       </div>
+      <Footer />
 
 
       <ChatAssistant />
