@@ -110,7 +110,7 @@ const Header = () => {
         Nutrijour
       </button>
 
-      <nav className="hidden md:flex items-center gap-12">
+      <nav className="hidden md:flex items-center gap-12 justify-self-center">
         <a
           className="text-white text-base tracking-wider hover:text-gray-300 z-50 hover:scale-[120%] duration-300 transform hover:-translate-y-1 rounded-full px-3 cursor-pointer"
           onClick={() => scrollToSection("history")}
@@ -139,14 +139,14 @@ const Header = () => {
               onClick={toggleUserMenu}
               className="flex items-center gap-2 hover:scale-105 transition-transform"
             >
-              <div className="w-12 h-12 rounded-full backdrop-blur-md bg-white/20 border border-white/30 flex items-center justify-center text-white font-bold text-lg shadow-[0_8px_32px_0_rgba(255,255,255,0.1)] hover:shadow-[0_8px_32px_0_rgba(255,255,255,0.2)] transition-all">
-                {getUserInitials()}
+              <div className="w-full h-8 px-14 rounded-full backdrop-blur-md bg-white/20 border border-white/30 flex items-center justify-center text-xl text-white  shadow-[0_8px_32px_0_rgba(255,255,255,0.1)] hover:shadow-[0_8px_32px_0_rgba(255,255,255,0.2)] transition-all">
+                {user.username.toLowerCase()}
               </div>
             </button>
 
             {/* Dropdown Menu */}
             {showUserMenu && (
-              <div className="absolute right-0 mt-2 w-64 backdrop-blur-xl bg-white/10 border border-white/20 rounded-2xl shadow-[0_8px_32px_0_rgba(0,0,0,0.3)] overflow-hidden animate-fadeIn">
+              <div className="absolute right-[-70px] mt-2 w-64 backdrop-blur-xl bg-white/10 border border-white/20 rounded-2xl shadow-[0_8px_32px_0_rgba(0,0,0,0.3)] overflow-hidden animate-fadeIn">
                 {/* User Info */}
                 <div className="backdrop-blur-lg bg-white/20 p-4 text-white border-b border-white/20">
                   <p className="font-semibold text-lg drop-shadow-md">{user.username}</p>

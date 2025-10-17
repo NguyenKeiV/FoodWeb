@@ -1,5 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { ChevronLeft, ChevronRight, ShoppingCart, UtensilsCrossed, Coffee } from "lucide-react";
+import {
+  ChevronLeft,
+  ChevronRight,
+  ShoppingCart,
+  UtensilsCrossed,
+  Coffee,
+} from "lucide-react";
 
 // ✅ Type definitions
 interface Product {
@@ -22,63 +28,70 @@ const productsData: Product[] = [
     name: "Salad ức gà",
     price: 65000,
     quantity: 15,
-    image: "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=500&h=500&fit=crop",
+    image:
+      "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=500&h=500&fit=crop",
     description: "Salad tươi ngon với ức gà nướng",
-    category: "food"
+    category: "food",
   },
   {
     id: 2,
     name: "Cơm gạo lứt",
     price: 55000,
     quantity: 18,
-    image: "https://images.unsplash.com/photo-1512058564366-18510be2db19?w=500&h=500&fit=crop",
+    image:
+      "https://images.unsplash.com/photo-1512058564366-18510be2db19?w=500&h=500&fit=crop",
     description: "Cơm gạo lứt đỏ hữu cơ giàu dinh dưỡng",
-    category: "food"
+    category: "food",
   },
   {
     id: 3,
     name: "Súp bí đỏ",
     price: 48000,
     quantity: 12,
-    image: "https://images.unsplash.com/photo-1476718406336-bb5a9690ee2a?w=500&h=500&fit=crop",
+    image:
+      "https://images.unsplash.com/photo-1476718406336-bb5a9690ee2a?w=500&h=500&fit=crop",
     description: "Súp bí đỏ kem béo ngậy, ấm áp",
-    category: "food"
+    category: "food",
   },
   {
     id: 4,
     name: "Sandwich bơ trứng",
     price: 42000,
     quantity: 22,
-    image: "https://images.unsplash.com/photo-1528735602780-2552fd46c7af?w=500&h=500&fit=crop",
+    image:
+      "https://images.unsplash.com/photo-1528735602780-2552fd46c7af?w=500&h=500&fit=crop",
     description: "Bánh mì sandwich với bơ và trứng",
-    category: "food"
+    category: "food",
   },
   {
     id: 9,
     name: "Salad ức gà",
     price: 65000,
     quantity: 15,
-    image: "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=500&h=500&fit=crop",
+    image:
+      "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=500&h=500&fit=crop",
     description: "Salad tươi ngon với ức gà nướng",
-    category: "food"
+    category: "food",
   },
   {
     id: 11,
     name: "Salad ức gà",
     price: 65000,
     quantity: 15,
-    image: "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=500&h=500&fit=crop",
+    image:
+      "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=500&h=500&fit=crop",
     description: "Salad tươi ngon với ức gà nướng",
-    category: "food"
+    category: "food",
   },
   {
     id: 12,
     name: "Salad ức gà",
     price: 65000,
     quantity: 15,
-    image: "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=500&h=500&fit=crop",
+    image:
+      "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=500&h=500&fit=crop",
     description: "Salad tươi ngon với ức gà nướng",
-    category: "food"
+    category: "food",
   },
   // ĐỒ UỐNG
   {
@@ -86,37 +99,41 @@ const productsData: Product[] = [
     name: "Nước ép cần tây",
     price: 45000,
     quantity: 20,
-    image: "https://images.unsplash.com/photo-1610970881699-44a5587cabec?w=500&h=500&fit=crop",
+    image:
+      "https://images.unsplash.com/photo-1610970881699-44a5587cabec?w=500&h=500&fit=crop",
     description: "Nước ép tươi mát từ cần tây organic",
-    category: "drink"
+    category: "drink",
   },
   {
     id: 6,
     name: "Sinh tố bơ",
     price: 50000,
     quantity: 25,
-    image: "https://images.unsplash.com/photo-1623065422902-30a2d299bbe4?w=500&h=500&fit=crop",
+    image:
+      "https://images.unsplash.com/photo-1623065422902-30a2d299bbe4?w=500&h=500&fit=crop",
     description: "Sinh tố bơ sánh mịn, bổ dưỡng",
-    category: "drink"
+    category: "drink",
   },
   {
     id: 7,
     name: "Trà xanh matcha",
     price: 40000,
     quantity: 30,
-    image: "https://images.unsplash.com/photo-1515823064-d6e0c04616a7?w=500&h=500&fit=crop",
+    image:
+      "https://images.unsplash.com/photo-1515823064-d6e0c04616a7?w=500&h=500&fit=crop",
     description: "Trà xanh matcha nguyên chất Nhật Bản",
-    category: "drink"
+    category: "drink",
   },
   {
     id: 8,
     name: "Nước dừa tươi",
     price: 35000,
     quantity: 28,
-    image: "https://images.unsplash.com/photo-1608797178974-15b35a64ede9?w=500&h=500&fit=crop",
+    image:
+      "https://images.unsplash.com/photo-1608797178974-15b35a64ede9?w=500&h=500&fit=crop",
     description: "Nước dừa xiêm tươi mát lạnh",
-    category: "drink"
-  }
+    category: "drink",
+  },
 ];
 
 const Products: React.FC = () => {
@@ -125,13 +142,15 @@ const Products: React.FC = () => {
   const [isAnimating, setIsAnimating] = useState<boolean>(false);
 
   // Lọc sản phẩm theo category
-  const filteredProducts = productsData.filter(p => p.category === selectedCategory);
+  const filteredProducts = productsData.filter(
+    (p) => p.category === selectedCategory
+  );
 
   // Format giá VNĐ
   const formatPrice = (price: number): string => {
-    return new Intl.NumberFormat('vi-VN', {
-      style: 'currency',
-      currency: 'VND'
+    return new Intl.NumberFormat("vi-VN", {
+      style: "currency",
+      currency: "VND",
     }).format(price);
   };
 
@@ -161,8 +180,11 @@ const Products: React.FC = () => {
     goToSlide(currentIndex - 1);
   };
 
-  // Tính toán vị trí và style cho mỗi card
-  const getCardStyle = (productIndex: number, currentIdx: number): React.CSSProperties => {
+  // 🎯 Tính toán vị trí theo hình vòng cung
+  const getCardStyle = (
+    productIndex: number,
+    currentIdx: number
+  ): React.CSSProperties => {
     const len = filteredProducts.length;
 
     let diff = productIndex - getActualIndex(currentIdx);
@@ -172,29 +194,39 @@ const Products: React.FC = () => {
 
     const absPosition = Math.abs(diff);
 
+    // ❌ Ẩn các thẻ quá xa
     if (absPosition > 2) {
       return {
-        transform: `translateX(${diff * 100}%) scale(0.7)`,
+        transform: `translateX(${diff * 50}%) scale(0.7)`,
         opacity: 0,
         zIndex: 0,
-        pointerEvents: 'none'
+        pointerEvents: "none",
       };
     }
 
+    // 🎯 Thẻ giữa (chính) - Thấp nhất (translateY = 0)
     if (diff === 0) {
       return {
-        transform: 'translateX(0%) scale(1.1)',
+        transform: "translateX(0%) translateY(0px) scale(1.1)",
         opacity: 1,
-        zIndex: 30,
-        pointerEvents: 'auto'
+        zIndex: 50,
+        pointerEvents: "auto",
       };
     }
 
+    // 🎯 Thẻ hai bên - Nâng lên dần (translateY âm = lên)
+    // Khoảng cách từ trung tâm càng xa, thẻ càng cao
+    const yOffset = Math.abs(diff) * 80; // Mỗi bậc cách 60px
+
+    // zIndex: thẻ phía trước cao hơn để che thẻ phía sau
+    const zIndex = diff > 0 ? 40 - absPosition : 30 - absPosition;
+
     return {
-      transform: `translateX(${diff * 100}%) scale(${1 - absPosition * 0.15})`,
+      transform: `translateX(${diff * 70}%) translateY(-${yOffset}px) scale(${1 - absPosition * 0.15
+        })`,
       opacity: 0.6 - absPosition * 0.2,
-      zIndex: 20 - absPosition,
-      pointerEvents: 'auto'
+      zIndex: zIndex,
+      pointerEvents: "auto",
     };
   };
 
@@ -264,7 +296,7 @@ const Products: React.FC = () => {
       </div>
 
       {/* Carousel Container */}
-      <div className="relative w-full max-w-6xl h-[500px] flex items-center justify-center">
+      <div className="relative w-full max-w-6xl h-[600px] flex items-center justify-center">
         {/* Cards */}
         <div className="relative w-full h-full flex items-center justify-center">
           {filteredProducts.map((product, index) => {
@@ -277,11 +309,16 @@ const Products: React.FC = () => {
                 className="absolute w-80 h-[450px] cursor-pointer"
                 style={{
                   ...style,
-                  transition: 'all 0.5s cubic-bezier(0.4, 0, 0.2, 1)',
+                  transition: "all 0.5s cubic-bezier(0.4, 0, 0.2, 1)",
                 }}
-                onClick={() => !isActive && goToSlide(currentIndex + (index - getActualIndex(currentIndex)))}
+                onClick={() =>
+                  !isActive &&
+                  goToSlide(
+                    currentIndex + (index - getActualIndex(currentIndex))
+                  )
+                }
               >
-                <div className="w-full h-full bg-white rounded-2xl shadow-2xl overflow-hidden hover:shadow-emerald-500/20 transition-shadow duration-300">
+                <div className="w-full h-[90%] bg-gray-200 rounded-2xl shadow-2xl overflow-hidden hover:shadow-emerald-500/20 transition-shadow duration-300">
                   {/* Image */}
                   <div className="relative h-56 overflow-hidden">
                     <img
@@ -295,27 +332,26 @@ const Products: React.FC = () => {
                   </div>
 
                   {/* Content */}
-                  <div className="p-6 flex flex-col justify-between h-[194px]">
+                  <div className="p-6 flex flex-col justify-between">
                     <div>
-                      <h3 className="text-2xl font-bold text-gray-800 mb-2">
-                        {product.name}
-                      </h3>
+                      <div className="flex justify-between">
+                        <h3 className="text-2xl font-semibold text-gray-500 mb-2">
+                          {product.name}
+                        </h3>
+                        <div className="text-2xl font-semibold text-emerald-500 mb-2">
+                          {formatPrice(product.price)}
+                        </div>
+                      </div>
                       <p className="text-gray-600 text-sm mb-4">
                         {product.description}
                       </p>
                     </div>
 
-                    <div>
-                      <div className="text-3xl font-bold text-emerald-600 mb-4">
-                        {formatPrice(product.price)}
-                      </div>
-
-                      {/* Button */}
-                      <button className="w-full bg-gradient-to-r from-emerald-600 to-teal-600 text-white py-3 rounded-xl font-semibold flex items-center justify-center gap-2 hover:from-emerald-700 hover:to-teal-700 transition-all duration-300 transform hover:scale-105 shadow-lg">
-                        <ShoppingCart size={20} />
-                        Thêm vào giỏ hàng
-                      </button>
-                    </div>
+                    {/* Button */}
+                    <button className="w-full bg-gradient-to-r from-emerald-600 to-teal-600 text-white py-3 rounded-xl font-semibold flex items-center justify-center gap-2 hover:from-emerald-700 hover:to-teal-700 transition-all duration-300 transform hover:scale-105 shadow-lg">
+                      <ShoppingCart size={20} />
+                      Thêm vào giỏ hàng
+                    </button>
                   </div>
                 </div>
               </div>
@@ -346,11 +382,13 @@ const Products: React.FC = () => {
         {filteredProducts.map((_, index) => (
           <button
             key={index}
-            onClick={() => goToSlide(currentIndex + (index - getActualIndex(currentIndex)))}
+            onClick={() =>
+              goToSlide(currentIndex + (index - getActualIndex(currentIndex)))
+            }
             disabled={isAnimating}
             className={`h-2 rounded-full transition-all duration-300 ${index === getActualIndex(currentIndex)
-              ? 'w-8 bg-white'
-              : 'w-2 bg-white/40 hover:bg-white/60'
+              ? "w-8 bg-white"
+              : "w-2 bg-white/40 hover:bg-white/60"
               }`}
           />
         ))}
