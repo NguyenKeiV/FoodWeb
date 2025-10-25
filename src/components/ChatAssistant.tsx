@@ -18,7 +18,7 @@ const ChatAssistant: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
-  const API_KEY = import.meta.env.VITE_CHATBOT_API;
+  const API_KEY = (import.meta as any).env.VITE_CHATBOT_API;
   const URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${API_KEY}`;
 
   useEffect(() => {
