@@ -144,7 +144,7 @@ const AdminPage: React.FC = () => {
                 </header>
 
                 {/* Content Area */}
-                <div className="flex-1 p-4 lg:p-8 overflow-auto">
+                <div className="flex-1 p-4 lg:p-8 ">
                     {activeTab === 'dashboard' && <Dashboard />}
                     {activeTab === 'foods' && <FoodManagement />}
                     {activeTab === 'users' && <UserManagement />}

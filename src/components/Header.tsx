@@ -90,13 +90,13 @@ const Header = () => {
     navigate('/profile');
   };
 
-  const navigateToOrders = () => {
-    setShowUserMenu(false);
-    navigate('/orders');
-  };
+
 
   const navigateToCart = () => {
     navigate('/cart');
+  };
+  const navigateToOrderHistory = () => {
+    navigate('/order-history');
   };
 
   // Get user initials for avatar
@@ -115,12 +115,12 @@ const Header = () => {
       </button>
 
       <nav className="hidden md:flex items-center gap-12 justify-self-center">
-        <a
-          className="text-white text-base tracking-wider hover:text-gray-300 z-50 hover:scale-[120%] duration-300 transform hover:-translate-y-1 rounded-full px-3 cursor-pointer"
-          onClick={() => scrollToSection("history")}
+        <button
+          onClick={navigateToOrderHistory}
+          className="text-base tracking-wider transition-colors hover:text-gray-300 z-50 cursor-pointer text-white"
         >
           LỊCH SỬ MUA HÀNG
-        </a>
+        </button>
         <a
           onClick={() => scrollToSection("menu")}
           className="text-white text-base tracking-wider hover:text-gray-300 z-50 hover:scale-[120%] duration-300 transform hover:-translate-y-1 rounded-full px-3 cursor-pointer"
@@ -171,7 +171,7 @@ const Header = () => {
                   </button>
 
                   <button
-                    onClick={navigateToOrders}
+                    onClick={navigateToOrderHistory}
                     className="w-full text-left px-4 py-3 hover:backdrop-blur-lg hover:bg-white/20 flex items-center gap-3 text-white transition-all"
                   >
                     <i className="bx bx-shopping-bag text-xl"></i>
@@ -236,12 +236,12 @@ const Header = () => {
         className="hidden fixed top-16 bottom-0 right-0 left-0 md:hidden pt-3 z-40 bg-black/15"
       >
         <nav className="flex flex-col gap-6 items-center">
-          <a
+          <button
             className="text-base tracking-wider transition-colors hover:text-gray-300 z-50 cursor-pointer text-white"
-            onClick={() => scrollToSection("history")}
+            onClick={navigateToOrderHistory}
           >
             LỊCH SỬ MUA HÀNG
-          </a>
+          </button>
           <a
             className="text-base tracking-wider transition-colors hover:text-gray-300 z-50 cursor-pointer text-white"
             onClick={() => scrollToSection("menu")}

@@ -5,6 +5,7 @@ import Login from './pages/LoginPage';
 import AdminPage from './pages/AdminPage';
 import CartPage from './pages/CartPage';
 import PaymentSuccess from './components/PaymentSucess';
+import OrderHistoryPage from './pages/OrderHistoryPage';
 
 function App() {
   return (
@@ -15,6 +16,8 @@ function App() {
         <Route path="/admin" element={<AdminPage />} />
         <Route path="/cart" element={<CartPage />} />
         <Route path="/payment-success" element={<PaymentSuccess />} />
+        <Route path="/order-history" element={<OrderHistoryPage />} />
+
       </Routes>
     </div>
   );

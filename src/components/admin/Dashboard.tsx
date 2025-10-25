@@ -1,5 +1,23 @@
 import React, { useState, useEffect } from 'react';
-import { UtensilsCrossed, Users, ShoppingBag, TrendingUp } from 'lucide-react';
+import { UtensilsCrossed, Users, ShoppingBag, TrendingUp, Package, Calendar, Clock } from 'lucide-react';
+import axios from 'axios';
+
+interface Order {
+    id: number;
+    order_code: string;
+    user_id: string;
+    amount: string;
+    description: string;
+    items: any[];
+    payment_method: string;
+    payment_status: string;
+    paid: boolean;
+    paid_at: string;
+    shipping_address: string;
+    shipping_fee: string;
+    created_at: string;
+    updated_at: string;
+}
 
 interface Stats {
     totalFoods: number;
@@ -8,6 +26,8 @@ interface Stats {
     revenue: number;
 }
 
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000/api';
+
 const Dashboard: React.FC = () => {
     const [stats, setStats] = useState<Stats>({
         totalFoods: 0,
@@ -15,36 +35,65 @@ const Dashboard: React.FC = () => {
         totalOrders: 0,
         revenue: 0
     });
+    const [orders, setOrders] = useState<Order[]>([]);
     const [loading, setLoading] = useState(true);
+    const [currentPage, setCurrentPage] = useState(1);
+    const [totalPages, setTotalPages] = useState(1);
 
     useEffect(() => {
-        fetchStats();
-    }, []);
+        fetchPaidOrders();
+    }, [currentPage]);
 
-    const fetchStats = async () => {
+    const fetchPaidOrders = async () => {
         try {
-            // TODO: Replace with actual API calls
-            // Fake data for now
-            setTimeout(() => {
+            setLoading(true);
+            const response = await axios.get(`${API_URL}/payment/orders/paid/all`, {
+                params: {
+                    page: currentPage,
+                    limit: 20
+                }
+            });
+
+            if (response.data.success) {
+                const ordersData = response.data.data;
+                setOrders(ordersData);
+                setTotalPages(response.data.pagination.totalPages);
+
+                // Tính tổng doanh thu từ tất cả đơn hàng đã thanh toán
+                const totalRevenue = ordersData.reduce((sum: number, order: Order) => {
+                    return sum + parseFloat(order.amount);
+                }, 0);
+
                 setStats({
-                    totalFoods: 24,
-                    totalUsers: 156,
-                    totalOrders: 342,
-                    revenue: 12500000
+                    totalFoods: 0, // TODO: Thêm API đếm foods
+                    totalUsers: 0, // TODO: Thêm API đếm users
+                    totalOrders: response.data.pagination.total,
+                    revenue: totalRevenue
                 });
-                setLoading(false);
-            }, 500);
+            }
         } catch (error) {
-            console.error('Error fetching stats:', error);
+            console.error('Error fetching paid orders:', error);
+        } finally {
             setLoading(false);
         }
     };
 
-    const formatCurrency = (amount: number) => {
+    const formatCurrency = (amount: number | string) => {
+        const numAmount = typeof amount === 'string' ? parseFloat(amount) : amount;
         return new Intl.NumberFormat('vi-VN', {
             style: 'currency',
             currency: 'VND'
-        }).format(amount);
+        }).format(numAmount);
+    };
+
+    const formatDate = (dateString: string) => {
+        return new Date(dateString).toLocaleDateString('vi-VN', {
+            day: '2-digit',
+            month: '2-digit',
+            year: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit'
+        });
     };
 
     const statCards = [
@@ -65,7 +114,7 @@ const Dashboard: React.FC = () => {
             iconColor: 'text-purple-400'
         },
         {
-            title: 'Đơn hàng',
+            title: 'Đơn hàng đã thanh toán',
             value: stats.totalOrders,
             icon: ShoppingBag,
             color: 'from-blue-500 to-cyan-500',
@@ -73,7 +122,7 @@ const Dashboard: React.FC = () => {
             iconColor: 'text-blue-400'
         },
         {
-            title: 'Doanh thu',
+            title: 'Tổng doanh thu',
             value: formatCurrency(stats.revenue),
             icon: TrendingUp,
             color: 'from-orange-500 to-red-500',
@@ -82,7 +131,7 @@ const Dashboard: React.FC = () => {
         }
     ];
 
-    if (loading) {
+    if (loading && orders.length === 0) {
         return (
             <div className="flex items-center justify-center h-64">
                 <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-emerald-500"></div>
@@ -113,23 +162,111 @@ const Dashboard: React.FC = () => {
                 })}
             </div>
 
-            {/* Quick Actions */}
+            {/* Orders List */}
             <div className="bg-slate-800/50 backdrop-blur-sm border border-white/10 rounded-2xl p-6">
-                <h3 className="text-xl font-bold text-white mb-4">Thống kê nhanh</h3>
-                <div className="space-y-4">
-                    <div className="flex items-center justify-between p-4 bg-white/5 rounded-xl">
-                        <span className="text-gray-300">Món ăn bán chạy nhất</span>
-                        <span className="text-emerald-400 font-semibold">Salad ức gà</span>
-                    </div>
-                    <div className="flex items-center justify-between p-4 bg-white/5 rounded-xl">
-                        <span className="text-gray-300">Đơn hàng hôm nay</span>
-                        <span className="text-blue-400 font-semibold">24 đơn</span>
-                    </div>
-                    <div className="flex items-center justify-between p-4 bg-white/5 rounded-xl">
-                        <span className="text-gray-300">User mới tuần này</span>
-                        <span className="text-purple-400 font-semibold">12 người</span>
-                    </div>
+                <div className="flex items-center justify-between mb-6">
+                    <h3 className="text-xl font-bold text-white">Đơn hàng đã thanh toán</h3>
+                    <span className="text-sm text-gray-400">
+                        Trang {currentPage} / {totalPages}
+                    </span>
                 </div>
+
+                {orders.length === 0 ? (
+                    <div className="text-center py-12">
+                        <Package className="mx-auto h-16 w-16 text-gray-600 mb-4" />
+                        <p className="text-gray-400">Chưa có đơn hàng nào</p>
+                    </div>
+                ) : (
+                    <div
+                        className="space-y-4 overflow-y-auto cart-scroll pr-2"
+                        style={{ maxHeight: "calc(100vh - 500px)" }}
+                    >
+                        {orders.map((order) => (
+                            <div
+                                key={order.id}
+                                className="bg-white/5 rounded-xl p-4 hover:bg-white/10 transition-all duration-300"
+                            >
+                                <div className="flex items-start justify-between">
+                                    <div className="flex-1">
+                                        <div className="flex items-center gap-3 mb-2">
+                                            <span className="text-emerald-400 font-semibold">
+                                                #{order.order_code}
+                                            </span>
+                                            <span className="px-2 py-1 bg-emerald-500/20 text-emerald-400 text-xs rounded-full">
+                                                {order.payment_status}
+                                            </span>
+                                        </div>
+
+                                        <div className="flex items-center gap-4 text-sm text-gray-400 mb-2">
+                                            <div className="flex items-center gap-1">
+                                                <Calendar size={14} />
+                                                <span>{formatDate(order.paid_at || order.created_at)}</span>
+                                            </div>
+                                            <div className="flex items-center gap-1">
+                                                <Package size={14} />
+                                                <span>{order.items?.length || 0} món</span>
+                                            </div>
+                                        </div>
+
+                                        {order.description && (
+                                            <p className="text-sm text-gray-500">{order.description}</p>
+                                        )}
+                                    </div>
+
+                                    <div className="text-right">
+                                        <div className="text-2xl font-bold text-white mb-1">
+                                            {formatCurrency(order.amount)}
+                                        </div>
+                                        {parseFloat(order.shipping_fee) > 0 && (
+                                            <div className="text-xs text-gray-400">
+                                                Phí ship: {formatCurrency(order.shipping_fee)}
+                                            </div>
+                                        )}
+                                    </div>
+                                </div>
+
+                                {/* Order Items */}
+                                {order.items && order.items.length > 0 && (
+                                    <div className="mt-3 pt-3 border-t border-white/5">
+                                        <div className="flex flex-wrap gap-2">
+                                            {order.items.map((item: any, idx: number) => (
+                                                <div
+                                                    key={idx}
+                                                    className="px-3 py-1 bg-white/5 rounded-lg text-xs text-gray-300"
+                                                >
+                                                    {item.name || item.food?.name} x{item.quantity}
+                                                </div>
+                                            ))}
+                                        </div>
+                                    </div>
+                                )}
+                            </div>
+                        ))}
+                    </div>
+                )}
+
+                {/* Pagination */}
+                {totalPages > 1 && (
+                    <div className="flex justify-center gap-2 mt-6">
+                        <button
+                            onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}
+                            disabled={currentPage === 1}
+                            className="px-4 py-2 bg-white/5 hover:bg-white/10 disabled:opacity-50 disabled:cursor-not-allowed text-white rounded-lg transition-all"
+                        >
+                            Trước
+                        </button>
+                        <span className="px-4 py-2 text-gray-400">
+                            {currentPage} / {totalPages}
+                        </span>
+                        <button
+                            onClick={() => setCurrentPage(prev => Math.min(totalPages, prev + 1))}
+                            disabled={currentPage === totalPages}
+                            className="px-4 py-2 bg-white/5 hover:bg-white/10 disabled:opacity-50 disabled:cursor-not-allowed text-white rounded-lg transition-all"
+                        >
+                            Sau
+                        </button>
+                    </div>
+                )}
             </div>
         </div>
     );

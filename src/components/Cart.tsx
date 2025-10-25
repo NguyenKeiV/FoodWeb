@@ -470,8 +470,8 @@ const Cart: React.FC = () => {
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 flex-1 overflow-hidden">
                     {/* Cart Items */}
                     <div
-                        className="lg:col-span-2 overflow-y-auto pr-3 space-y-4"
-                        style={{ maxHeight: "calc(100vh - 200px)" }}
+                        className="lg:col-span-2 overflow-y-auto pr-3 space-y-4 cart-scroll"
+                        style={{ maxHeight: "calc(100vh - 330px)" }}
                     >
                         {cartItems.map((item) => (
                             <div
