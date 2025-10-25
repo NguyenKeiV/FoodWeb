@@ -20,18 +20,18 @@ interface Order {
 }
 
 interface Stats {
-    totalFoods: number;
-    totalUsers: number;
+    totalFoods: 10;
+    totalUsers: 2;
     totalOrders: number;
     revenue: number;
 }
 
-const API_URL = (import.meta as any).env.VITE_API_URL || 'http://localhost:3000/api';
+const API_URL = (import.meta as any).env.VITE_API_URL || 'https://foodweb-be.onrender.com/api';
 
 const Dashboard: React.FC = () => {
     const [stats, setStats] = useState<Stats>({
-        totalFoods: 0,
-        totalUsers: 0,
+        totalFoods: 10,
+        totalUsers: 2,
         totalOrders: 0,
         revenue: 0
     });
@@ -65,8 +65,8 @@ const Dashboard: React.FC = () => {
                 }, 0);
 
                 setStats({
-                    totalFoods: 0, // TODO: Thêm API đếm foods
-                    totalUsers: 0, // TODO: Thêm API đếm users
+                    totalFoods: 10, // TODO: Thêm API đếm foods
+                    totalUsers: 2, // TODO: Thêm API đếm users
                     totalOrders: response.data.pagination.total,
                     revenue: totalRevenue
                 });
@@ -179,7 +179,7 @@ const Dashboard: React.FC = () => {
                 ) : (
                     <div
                         className="space-y-4 overflow-y-auto cart-scroll pr-2"
-                        style={{ maxHeight: "calc(100vh - 500px)" }}
+                        style={{ maxHeight: "calc(100vh - 465px)" }}
                     >
                         {orders.map((order) => (
                             <div
@@ -192,9 +192,7 @@ const Dashboard: React.FC = () => {
                                             <span className="text-emerald-400 font-semibold">
                                                 #{order.order_code}
                                             </span>
-                                            <span className="px-2 py-1 bg-emerald-500/20 text-emerald-400 text-xs rounded-full">
-                                                {order.payment_status}
-                                            </span>
+
                                         </div>
 
                                         <div className="flex items-center gap-4 text-sm text-gray-400 mb-2">

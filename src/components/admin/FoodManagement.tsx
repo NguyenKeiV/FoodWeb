@@ -30,7 +30,7 @@ interface PaginatedResponse {
     };
 }
 
-const API_BASE_URL = (import.meta as any).env.VITE_API_BASE_URL || 'http://localhost:3000/api';
+const API_BASE_URL = (import.meta as any).env.VITE_API_BASE_URL || 'https://foodweb-be.onrender.com/api';
 
 const FoodManagement: React.FC = () => {
     const [foods, setFoods] = useState<Food[]>([]);
@@ -74,7 +74,6 @@ const FoodManagement: React.FC = () => {
 
             if (data.success) {
                 setFoods(data.data);
-                // Nếu có pagination trong response
                 if ('pagination' in data) {
                     const paginatedData = data as unknown as ApiResponse<PaginatedResponse>;
                     setTotalPages(paginatedData.data.pagination?.totalPages || 1);
@@ -123,13 +122,11 @@ const FoodManagement: React.FC = () => {
     const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
         if (file) {
-            // Validate file type
             if (!file.type.startsWith('image/')) {
                 alert('Vui lòng chọn file ảnh!');
                 return;
             }
 
-            // Validate file size (5MB)
             if (file.size > 5 * 1024 * 1024) {
                 alert('Kích thước ảnh không được vượt quá 5MB!');
                 return;
@@ -137,7 +134,6 @@ const FoodManagement: React.FC = () => {
 
             setImageFile(file);
 
-            // Create preview
             const reader = new FileReader();
             reader.onloadend = () => {
                 setImagePreview(reader.result as string);
@@ -149,7 +145,6 @@ const FoodManagement: React.FC = () => {
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
 
-        // Validate form
         if (!formData.name.trim()) {
             alert('Tên món ăn không được để trống!');
             return;
@@ -177,7 +172,6 @@ const FoodManagement: React.FC = () => {
             submitFormData.append('quantity', formData.quantity || '0');
             submitFormData.append('category', formData.category);
 
-            // Chỉ append image nếu có file mới
             if (imageFile) {
                 submitFormData.append('image', imageFile);
             }
@@ -245,12 +239,10 @@ const FoodManagement: React.FC = () => {
             category: food.category || 'food'
         });
 
-        // Set image preview nếu có
         if (food.img) {
-            // Nếu img là relative path, thêm base URL
             const imageUrl = food.img.startsWith('http')
                 ? food.img
-                : `http://localhost:3000${food.img}`;
+                : `https://foodweb-be.onrender.com${food.img}`;
             setImagePreview(imageUrl);
         } else {
             setImagePreview('');
@@ -283,7 +275,7 @@ const FoodManagement: React.FC = () => {
     const getImageUrl = (img: string | null) => {
         if (!img) return 'https://via.placeholder.com/400x300?text=No+Image';
         if (img.startsWith('http')) return img;
-        return `http://localhost:3000${img}`;
+        return `https://foodweb-be.onrender.com${img}`;
     };
 
     if (loading && foods.length === 0) {
@@ -295,8 +287,8 @@ const FoodManagement: React.FC = () => {
     }
 
     return (
-        <div className="space-y-6">
-            <div className="flex flex-col sm:flex-row gap-4 justify-between items-start sm:items-center">
+        <div className="space-y-6 h-full flex flex-col">
+            <div className="flex flex-col sm:flex-row gap-4 justify-between items-start sm:items-center flex-shrink-0">
                 <div className="relative flex-1 max-w-md">
                     <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={20} />
                     <input
@@ -321,55 +313,60 @@ const FoodManagement: React.FC = () => {
                     <p className="text-gray-400 text-lg">Không tìm thấy món ăn nào</p>
                 </div>
             ) : (
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    {foods.map((food) => (
-                        <div key={food.id} className="bg-slate-800/50 backdrop-blur-sm border border-white/10 rounded-2xl overflow-hidden hover:border-white/20 transition-all">
-                            <div className="relative h-48">
-                                <img
-                                    src={getImageUrl(food.img)}
-                                    alt={food.name}
-                                    className="w-full h-full object-cover"
-                                    onError={(e) => {
-                                        e.currentTarget.src = 'https://via.placeholder.com/400x300?text=No+Image';
-                                    }}
-                                />
-                                <div className="absolute top-3 right-3 bg-emerald-500/90 backdrop-blur-sm px-3 py-1 rounded-full text-xs text-white font-semibold">
-                                    Còn {food.quantity}
-                                </div>
-                                {food.category && (
-                                    <div className="absolute top-3 left-3 bg-slate-900/90 backdrop-blur-sm px-3 py-1 rounded-full text-xs text-white">
-                                        {food.category === 'food' ? 'Đồ ăn' : 'Đồ uống'}
+                <div
+                    className="overflow-y-auto cart-scroll pr-2 flex-1"
+                    style={{ maxHeight: "calc(100vh - 250px)" }}
+                >
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        {foods.map((food) => (
+                            <div key={food.id} className="bg-slate-800/50 backdrop-blur-sm border border-white/10 rounded-2xl overflow-hidden hover:border-white/20 transition-all">
+                                <div className="relative h-48">
+                                    <img
+                                        src={getImageUrl(food.img)}
+                                        alt={food.name}
+                                        className="w-full h-full object-cover"
+                                        onError={(e) => {
+                                            e.currentTarget.src = 'https://via.placeholder.com/400x300?text=No+Image';
+                                        }}
+                                    />
+                                    <div className="absolute top-3 right-3 bg-emerald-500/90 backdrop-blur-sm px-3 py-1 rounded-full text-xs text-white font-semibold">
+                                        Còn {food.quantity}
                                     </div>
-                                )}
-                            </div>
-                            <div className="p-4">
-                                <h3 className="text-lg font-semibold text-white mb-2">{food.name}</h3>
-                                <p className="text-emerald-400 font-bold text-xl mb-4">{formatPrice(food.price)}</p>
-                                <div className="flex gap-2">
-                                    <button
-                                        onClick={() => handleEdit(food)}
-                                        className="flex-1 flex items-center justify-center gap-2 px-4 py-2 bg-blue-500/20 text-blue-400 rounded-lg hover:bg-blue-500/30 transition-all"
-                                    >
-                                        <Edit2 size={16} />
-                                        Sửa
-                                    </button>
-                                    <button
-                                        onClick={() => handleDelete(food.id)}
-                                        className="flex-1 flex items-center justify-center gap-2 px-4 py-2 bg-red-500/20 text-red-400 rounded-lg hover:bg-red-500/30 transition-all"
-                                    >
-                                        <Trash2 size={16} />
-                                        Xóa
-                                    </button>
+                                    {food.category && (
+                                        <div className="absolute top-3 left-3 bg-slate-900/90 backdrop-blur-sm px-3 py-1 rounded-full text-xs text-white">
+                                            {food.category === 'food' ? 'Đồ ăn' : 'Đồ uống'}
+                                        </div>
+                                    )}
+                                </div>
+                                <div className="p-4">
+                                    <h3 className="text-lg font-semibold text-white mb-2">{food.name}</h3>
+                                    <p className="text-emerald-400 font-bold text-xl mb-4">{formatPrice(food.price)}</p>
+                                    <div className="flex gap-2">
+                                        <button
+                                            onClick={() => handleEdit(food)}
+                                            className="flex-1 flex items-center justify-center gap-2 px-4 py-2 bg-blue-500/20 text-blue-400 rounded-lg hover:bg-blue-500/30 transition-all"
+                                        >
+                                            <Edit2 size={16} />
+                                            Sửa
+                                        </button>
+                                        <button
+                                            onClick={() => handleDelete(food.id)}
+                                            className="flex-1 flex items-center justify-center gap-2 px-4 py-2 bg-red-500/20 text-red-400 rounded-lg hover:bg-red-500/30 transition-all"
+                                        >
+                                            <Trash2 size={16} />
+                                            Xóa
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    ))}
+                        ))}
+                    </div>
                 </div>
             )}
 
             {/* Pagination */}
             {totalPages > 1 && (
-                <div className="flex justify-center gap-2 mt-6">
+                <div className="flex justify-center gap-2 flex-shrink-0">
                     <button
                         onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}
                         disabled={currentPage === 1}
@@ -393,7 +390,7 @@ const FoodManagement: React.FC = () => {
             {/* Modal */}
             {showModal && (
                 <div className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-                    <div className="bg-slate-800 rounded-2xl border border-white/10 max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+                    <div className="bg-slate-800 rounded-2xl border border-white/10 max-w-2xl w-full max-h-[90vh] overflow-y-auto cart-scroll">
                         <div className="flex items-center justify-between p-6 border-b border-white/10">
                             <h2 className="text-2xl font-bold text-white">
                                 {editingFood ? 'Sửa món ăn' : 'Thêm món ăn mới'}

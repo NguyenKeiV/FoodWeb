@@ -38,7 +38,7 @@ interface ApiResponse<T> {
 
 type Category = "food" | "drink";
 
-const API_BASE_URL = (import.meta as any).env.VITE_API_BASE_URL || 'http://localhost:3000/api';
+const API_BASE_URL = (import.meta as any).env.VITE_API_BASE_URL || 'https://foodweb-be.onrender.com/api';
 
 const Products: React.FC = () => {
   const [selectedCategory, setSelectedCategory] = useState<Category>("food");
@@ -191,7 +191,7 @@ const Products: React.FC = () => {
   const getImageUrl = (img: string | null): string => {
     if (!img) return "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=500&h=500&fit=crop";
     if (img.startsWith("http")) return img;
-    return `http://localhost:3000${img}`;
+    return `https://foodweb-be.onrender.com${img}`;
   };
 
   // Infinity loop: Tính index thực với modulo
@@ -512,8 +512,8 @@ const Products: React.FC = () => {
                 }
                 disabled={isAnimating}
                 className={`h-2 rounded-full transition-all duration-300 ${index === getActualIndex(currentIndex)
-                    ? "w-8 bg-white"
-                    : "w-2 bg-white/40 hover:bg-white/60"
+                  ? "w-8 bg-white"
+                  : "w-2 bg-white/40 hover:bg-white/60"
                   }`}
               />
             ))}

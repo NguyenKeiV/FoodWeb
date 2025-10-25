@@ -36,7 +36,7 @@ interface ApiResponse {
     };
 }
 
-const API_BASE_URL = (import.meta as any).env.VITE_API_BASE_URL || 'http://localhost:3000/api';
+const API_BASE_URL = (import.meta as any).env.VITE_API_BASE_URL || 'https://foodweb-be.onrender.com/api';
 
 const OrderHistory = () => {
     const navigate = useNavigate();
