@@ -39,3 +39,12 @@
 .active\:cursor-grabbing:active {
   cursor: grabbing;
 }
+/* Ẩn scrollbar nhưng vẫn cho phép scroll */
+.cart-scroll {
+  -ms-overflow-style: none; /* Ẩn trên IE và Edge */
+  scrollbar-width: none; /* Ẩn trên Firefox */
+}
+
+.cart-scroll::-webkit-scrollbar {
+  display: none; /* Ẩn trên Chrome, Safari và Opera */
+}

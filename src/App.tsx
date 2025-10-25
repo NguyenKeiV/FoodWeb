@@ -3,6 +3,8 @@ import { Routes, Route } from 'react-router-dom';
 import LandingPage from './pages/LandingPage'
 import Login from './pages/LoginPage';
 import AdminPage from './pages/AdminPage';
+import CartPage from './pages/CartPage';
+import PaymentSuccess from './components/PaymentSucess';
 
 function App() {
   return (
@@ -11,6 +13,8 @@ function App() {
         <Route path="/" element={<LandingPage />} />
         <Route path="/login" element={<Login />} />
         <Route path="/admin" element={<AdminPage />} />
+        <Route path="/cart" element={<CartPage />} />
+        <Route path="/payment-success" element={<PaymentSuccess />} />
       </Routes>
     </div>
   );

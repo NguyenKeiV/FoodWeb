@@ -95,6 +95,10 @@ const Header = () => {
     navigate('/orders');
   };
 
+  const navigateToCart = () => {
+    navigate('/cart');
+  };
+
   // Get user initials for avatar
   const getUserInitials = () => {
     if (!user) return '?';
@@ -123,12 +127,12 @@ const Header = () => {
         >
           MENU
         </a>
-        <a
-          onClick={() => scrollToSection("cart")}
+        <button
+          onClick={navigateToCart}
           className="text-white text-base tracking-wider hover:text-gray-300 z-50 hover:scale-[120%] duration-300 transform hover:-translate-y-1 rounded-full px-3 cursor-pointer"
         >
           GIỎ HÀNG
-        </a>
+        </button>
       </nav>
 
       {/* Desktop Auth Section */}
@@ -139,7 +143,7 @@ const Header = () => {
               onClick={toggleUserMenu}
               className="flex items-center gap-2 hover:scale-105 transition-transform"
             >
-              <div className="w-full h-8 px-14 rounded-full backdrop-blur-md bg-white/20 border border-white/30 flex items-center justify-center text-xl text-white  shadow-[0_8px_32px_0_rgba(255,255,255,0.1)] hover:shadow-[0_8px_32px_0_rgba(255,255,255,0.2)] transition-all">
+              <div className="w-full h-8 px-14 rounded-full backdrop-blur-md bg-white/20 border border-white/30 flex items-center justify-center text-xl text-white shadow-[0_8px_32px_0_rgba(255,255,255,0.1)] hover:shadow-[0_8px_32px_0_rgba(255,255,255,0.2)] transition-all">
                 {user.username.toLowerCase()}
               </div>
             </button>
@@ -172,6 +176,14 @@ const Header = () => {
                   >
                     <i className="bx bx-shopping-bag text-xl"></i>
                     <span>Đơn hàng của tôi</span>
+                  </button>
+
+                  <button
+                    onClick={navigateToCart}
+                    className="w-full text-left px-4 py-3 hover:backdrop-blur-lg hover:bg-white/20 flex items-center gap-3 text-white transition-all"
+                  >
+                    <i className="bx bx-cart text-xl"></i>
+                    <span>Giỏ hàng</span>
                   </button>
 
                   {user.role === 'admin' && (
@@ -225,23 +237,23 @@ const Header = () => {
       >
         <nav className="flex flex-col gap-6 items-center">
           <a
-            className="text-base tracking-wider transition-colors hover:text-gray-300 z-50 cursor-pointer"
+            className="text-base tracking-wider transition-colors hover:text-gray-300 z-50 cursor-pointer text-white"
             onClick={() => scrollToSection("history")}
           >
             LỊCH SỬ MUA HÀNG
           </a>
           <a
-            className="text-base tracking-wider transition-colors hover:text-gray-300 z-50 cursor-pointer"
+            className="text-base tracking-wider transition-colors hover:text-gray-300 z-50 cursor-pointer text-white"
             onClick={() => scrollToSection("menu")}
           >
             MENU
           </a>
-          <a
-            className="text-base tracking-wider transition-colors hover:text-gray-300 z-50 cursor-pointer"
-            onClick={() => scrollToSection("cart")}
+          <button
+            onClick={navigateToCart}
+            className="text-base tracking-wider transition-colors hover:text-gray-300 z-50 cursor-pointer text-white"
           >
             GIỎ HÀNG
-          </a>
+          </button>
 
           {/* Mobile Auth */}
           {isAuthenticated && user ? (
@@ -254,7 +266,7 @@ const Header = () => {
               </div>
               <button
                 onClick={navigateToProfile}
-                className="text-base tracking-wider transition-colors hover:text-gray-300 cursor-pointer"
+                className="text-base tracking-wider transition-colors hover:text-gray-300 cursor-pointer text-white"
               >
                 THÔNG TIN CÁ NHÂN
               </button>
