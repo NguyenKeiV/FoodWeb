@@ -21,7 +21,7 @@ const UserManagement: React.FC = () => {
     const fetchUsers = async () => {
         try {
             const token = localStorage.getItem('token');
-            const response = await fetch(import.meta.env.VITE_API_BASE_URL + '/users', {
+            const response = await fetch((import.meta as any).env.VITE_API_BASE_URL + '/users', {
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }
@@ -44,7 +44,7 @@ const UserManagement: React.FC = () => {
         const token = localStorage.getItem('token');
 
         try {
-            const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/users/${id}`, {
+            const response = await fetch(`${(import.meta as any).env.VITE_API_BASE_URL}/users/${id}`, {
                 method: 'DELETE',
                 headers: {
                     'Authorization': `Bearer ${token}`
@@ -87,9 +87,9 @@ const UserManagement: React.FC = () => {
     }
 
     return (
-        <div className="space-y-6">
+        <div className="space-y-6 h-full flex flex-col">
             {/* Header */}
-            <div className="flex flex-col sm:flex-row gap-4 justify-between items-start sm:items-center">
+            <div className="flex flex-col sm:flex-row gap-4 justify-between items-start sm:items-center flex-shrink-0">
                 <div className="relative flex-1 max-w-md">
                     <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={20} />
                     <input
@@ -110,7 +110,7 @@ const UserManagement: React.FC = () => {
             </div>
 
             {/* Stats Cards */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 flex-shrink-0">
                 <div className="bg-slate-800/50 backdrop-blur-sm border border-white/10 rounded-xl p-4">
                     <div className="flex items-center gap-3">
                         <div className="w-12 h-12 bg-blue-500/20 rounded-lg flex items-center justify-center">
@@ -153,11 +153,14 @@ const UserManagement: React.FC = () => {
             </div>
 
             {/* Users Table */}
-            <div className="bg-slate-800/50 backdrop-blur-sm border border-white/10 rounded-2xl overflow-hidden">
-                <div className="overflow-x-auto">
+            <div className="bg-slate-800/50 backdrop-blur-sm border border-white/10 rounded-2xl overflow-hidden flex-1 flex flex-col">
+                <div
+                    className="overflow-y-auto cart-scroll flex-1"
+                    style={{ maxHeight: "calc(100vh - 450px)" }}
+                >
                     <table className="w-full">
-                        <thead>
-                            <tr className="bg-white/5 border-b border-white/10">
+                        <thead className="sticky top-0 bg-slate-800/90 backdrop-blur-sm z-10">
+                            <tr className="border-b border-white/10">
                                 <th className="px-6 py-4 text-left text-sm font-semibold text-gray-300">
                                     Người dùng
                                 </th>
@@ -194,12 +197,12 @@ const UserManagement: React.FC = () => {
                                     </td>
                                     <td className="px-6 py-4">
                                         <span className={`
-                      inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-semibold
-                      ${user.role === 'admin'
+                                            inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-semibold
+                                            ${user.role === 'admin'
                                                 ? 'bg-purple-500/20 text-purple-400 border border-purple-500/30'
                                                 : 'bg-blue-500/20 text-blue-400 border border-blue-500/30'
                                             }
-                    `}>
+                                        `}>
                                             {user.role === 'admin' ? (
                                                 <>
                                                     <Shield size={12} />

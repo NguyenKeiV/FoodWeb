@@ -26,7 +26,7 @@ interface Stats {
     revenue: number;
 }
 
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000/api';
+const API_URL = (import.meta as any).env.VITE_API_URL || 'http://localhost:3000/api';
 
 const Dashboard: React.FC = () => {
     const [stats, setStats] = useState<Stats>({
