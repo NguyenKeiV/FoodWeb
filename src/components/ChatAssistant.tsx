@@ -223,5 +223,4 @@ const ChatAssistant: React.FC = () => {
     </div>
   );
 };
-
 export default ChatAssistant;
