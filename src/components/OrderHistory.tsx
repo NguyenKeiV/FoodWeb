@@ -246,10 +246,7 @@ const OrderHistory = () => {
                                                     <h3 className="text-xl font-semibold text-white">
                                                         Đơn hàng #{order.order_code}
                                                     </h3>
-                                                    <span className={`px-3 py-1 rounded-full text-sm font-semibold border flex items-center gap-2 ${statusConfig.color}`}>
-                                                        <span>{statusConfig.icon}</span>
-                                                        {statusConfig.text}
-                                                    </span>
+
                                                 </div>
 
                                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-emerald-100 text-sm">
