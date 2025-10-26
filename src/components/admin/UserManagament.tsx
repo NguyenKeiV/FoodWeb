@@ -9,6 +9,9 @@ interface UserData {
     created_at: string;
 }
 
+// ✅ FIXED: Add fallback URL
+const API_BASE_URL = (import.meta as any).env.VITE_API_BASE_URL || 'https://foodweb-be.onrender.com/api';
+
 const UserManagement: React.FC = () => {
     const [users, setUsers] = useState<UserData[]>([]);
     const [loading, setLoading] = useState(true);
@@ -21,11 +24,14 @@ const UserManagement: React.FC = () => {
     const fetchUsers = async () => {
         try {
             const token = localStorage.getItem('token');
-            const response = await fetch((import.meta as any).env.VITE_API_BASE_URL + '/users', {
+
+            // ✅ FIXED: Use API_BASE_URL instead of env directly
+            const response = await fetch(`${API_BASE_URL}/users`, {
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }
             });
+
             const data = await response.json();
 
             if (data.success) {
@@ -44,7 +50,8 @@ const UserManagement: React.FC = () => {
         const token = localStorage.getItem('token');
 
         try {
-            const response = await fetch(`${(import.meta as any).env.VITE_API_BASE_URL}/users/${id}`, {
+            // ✅ FIXED: Use API_BASE_URL
+            const response = await fetch(`${API_BASE_URL}/users/${id}`, {
                 method: 'DELETE',
                 headers: {
                     'Authorization': `Bearer ${token}`
