@@ -93,7 +93,16 @@ const Cart: React.FC = () => {
             const data = await response.json();
 
             if (data.success) {
-                setCartItems(data.data || []);
+                // ✅ Filter out items with missing food data
+                const validItems = (data.data || []).filter((item: CartItem) => {
+                    if (!item.food) {
+                        console.warn('⚠️ Cart item missing food data:', item);
+                        return false;
+                    }
+                    return true;
+                });
+
+                setCartItems(validItems);
                 setTotalPrice(data.total || 0);
             } else {
                 setError(data.error || "Không thể tải giỏ hàng");
