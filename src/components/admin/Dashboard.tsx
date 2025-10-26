@@ -26,7 +26,8 @@ interface Stats {
     revenue: number;
 }
 
-const API_URL = (import.meta as any).env.VITE_API_URL || 'https://foodweb-be.onrender.com/api';
+// ✅ FIXED: Use consistent variable name
+const API_BASE_URL = (import.meta as any).env.VITE_API_BASE_URL || 'https://foodweb-be.onrender.com/api';
 
 const Dashboard: React.FC = () => {
     const [stats, setStats] = useState<Stats>({
@@ -47,7 +48,8 @@ const Dashboard: React.FC = () => {
     const fetchPaidOrders = async () => {
         try {
             setLoading(true);
-            const response = await axios.get(`${API_URL}/payment/orders/paid/all`, {
+            // ✅ FIXED: Use API_BASE_URL instead of API_URL
+            const response = await axios.get(`${API_BASE_URL}/payment/orders/paid/all`, {
                 params: {
                     page: currentPage,
                     limit: 20
