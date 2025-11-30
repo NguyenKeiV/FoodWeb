@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { UtensilsCrossed, Users, ShoppingBag, TrendingUp, Package, Calendar, Clock } from 'lucide-react';
+import { UtensilsCrossed, Users, ShoppingBag, TrendingUp, Package, Calendar } from 'lucide-react';
 import axios from 'axios';
 
 interface Order {
@@ -20,19 +20,18 @@ interface Order {
 }
 
 interface Stats {
-    totalFoods: 10;
-    totalUsers: 2;
+    totalFoods: number;
+    totalUsers: number;
     totalOrders: number;
     revenue: number;
 }
 
-// ✅ FIXED: Use consistent variable name
 const API_BASE_URL = (import.meta as any).env.VITE_API_BASE_URL || 'https://foodweb-be.onrender.com/api';
 
 const Dashboard: React.FC = () => {
     const [stats, setStats] = useState<Stats>({
-        totalFoods: 10,
-        totalUsers: 2,
+        totalFoods: 0,
+        totalUsers: 0,
         totalOrders: 0,
         revenue: 0
     });
@@ -42,39 +41,54 @@ const Dashboard: React.FC = () => {
     const [totalPages, setTotalPages] = useState(1);
 
     useEffect(() => {
-        fetchPaidOrders();
+        fetchAllData();
     }, [currentPage]);
 
-    const fetchPaidOrders = async () => {
+    const fetchAllData = async () => {
         try {
             setLoading(true);
-            // ✅ FIXED: Use API_BASE_URL instead of API_URL
-            const response = await axios.get(`${API_BASE_URL}/payment/orders/paid/all`, {
-                params: {
-                    page: currentPage,
-                    limit: 20
-                }
-            });
+            const token = localStorage.getItem('token');
 
-            if (response.data.success) {
-                const ordersData = response.data.data;
+            // ✅ Fetch tất cả data song song
+            const [ordersRes, usersRes, foodsRes] = await Promise.all([
+                // 1. Fetch orders (đã có)
+                axios.get(`${API_BASE_URL}/payment/orders/paid/all`, {
+                    params: { page: currentPage, limit: 20 }
+                }),
+
+                // 2. Fetch users count
+                axios.get(`${API_BASE_URL}/users`, {
+                    headers: { 'Authorization': `Bearer ${token}` },
+                    params: { page: 1, limit: 1 } // Chỉ cần count
+                }),
+
+                // 3. Fetch foods count
+                axios.get(`${API_BASE_URL}/foods`, {
+                    params: { page: 1, limit: 1 } // Chỉ cần count
+                })
+            ]);
+
+            // Process orders
+            if (ordersRes.data.success) {
+                const ordersData = ordersRes.data.data;
                 setOrders(ordersData);
-                setTotalPages(response.data.pagination.totalPages);
+                setTotalPages(ordersRes.data.pagination.totalPages);
 
-                // Tính tổng doanh thu từ tất cả đơn hàng đã thanh toán
+                // Tính tổng doanh thu
                 const totalRevenue = ordersData.reduce((sum: number, order: Order) => {
                     return sum + parseFloat(order.amount);
                 }, 0);
 
+                // ✅ Cập nhật stats với data thực
                 setStats({
-                    totalFoods: 10, // TODO: Thêm API đếm foods
-                    totalUsers: 2, // TODO: Thêm API đếm users
-                    totalOrders: response.data.pagination.total,
+                    totalFoods: foodsRes.data.pagination?.total || 0,
+                    totalUsers: usersRes.data.pagination?.total || 0,
+                    totalOrders: ordersRes.data.pagination.total,
                     revenue: totalRevenue
                 });
             }
         } catch (error) {
-            console.error('Error fetching paid orders:', error);
+            console.error('Error fetching dashboard data:', error);
         } finally {
             setLoading(false);
         }
