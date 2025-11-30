@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { UtensilsCrossed, Users, ShoppingBag, TrendingUp, Package, Calendar } from 'lucide-react';
+import { UtensilsCrossed, Users, ShoppingBag, TrendingUp, Package, Calendar, Download } from 'lucide-react';
 import axios from 'axios';
+import * as XLSX from 'xlsx';
 
 interface Order {
     id: number;
@@ -112,6 +113,137 @@ const Dashboard: React.FC = () => {
         });
     };
 
+    // ✅ Export to Excel function
+    const exportToExcel = () => {
+        try {
+            // Prepare data for export
+            const exportData = orders.map((order, index) => {
+                const itemsDetail = order.items?.map((item: any) =>
+                    `${item.name || item.food?.name} (SL: ${item.quantity}, Giá: ${formatCurrency(item.price * item.quantity)})`
+                ).join('; ') || '';
+
+                return {
+                    'STT': index + 1,
+                    'Mã đơn hàng': order.order_code,
+                    'User ID': order.user_id,
+                    'Địa chỉ giao hàng': order.shipping_address || '',
+                    'Số món': order.items?.length || 0,
+                    'Chi tiết món ăn': itemsDetail,
+                    'Tạm tính': parseFloat(order.amount).toLocaleString('vi-VN') + ' ₫',
+                    'Phí vận chuyển': parseFloat(order.shipping_fee).toLocaleString('vi-VN') + ' ₫',
+                    'Tổng tiền': (parseFloat(order.amount) + parseFloat(order.shipping_fee || '0')).toLocaleString('vi-VN') + ' ₫',
+                    'Phương thức thanh toán': order.payment_method,
+                    'Trạng thái': order.payment_status,
+                    'Ngày thanh toán': formatDate(order.paid_at || order.created_at),
+                    'Ghi chú': order.description || ''
+                };
+            });
+
+            // Create workbook and worksheet
+            const worksheet = XLSX.utils.json_to_sheet(exportData);
+            const workbook = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(workbook, worksheet, 'Đơn hàng');
+
+            // Set column widths
+            const columnWidths = [
+                { wch: 5 },   // STT
+                { wch: 15 },  // Mã đơn hàng
+                { wch: 30 },  // User ID
+                { wch: 35 },  // Địa chỉ
+                { wch: 10 },  // Số món
+                { wch: 50 },  // Chi tiết món
+                { wch: 15 },  // Tạm tính
+                { wch: 15 },  // Phí ship
+                { wch: 15 },  // Tổng tiền
+                { wch: 15 },  // PT thanh toán
+                { wch: 12 },  // Trạng thái
+                { wch: 18 },  // Ngày TT
+                { wch: 20 }   // Ghi chú
+            ];
+            worksheet['!cols'] = columnWidths;
+
+            // Generate filename with current date
+            const fileName = `DonHang_Trang${currentPage}_${new Date().toLocaleDateString('vi-VN').replace(/\//g, '-')}.xlsx`;
+
+            // Export file
+            XLSX.writeFile(workbook, fileName);
+
+            alert(`✅ Đã xuất ${orders.length} đơn hàng ra file Excel!`);
+        } catch (error) {
+            console.error('Export error:', error);
+            alert('❌ Không thể xuất file Excel. Vui lòng thử lại!');
+        }
+    };
+
+    // ✅ Export ALL orders (fetch all pages)
+    const exportAllOrders = async () => {
+        try {
+            if (!confirm(`Bạn có chắc muốn xuất TẤT CẢ ${stats.totalOrders} đơn hàng ra Excel? Quá trình này có thể mất vài giây.`)) {
+                return;
+            }
+
+            setLoading(true);
+
+            // Fetch all orders at once
+            const response = await axios.get(`${API_BASE_URL}/payment/orders/paid/all`, {
+                params: { page: 1, limit: stats.totalOrders } // Lấy tất cả
+            });
+
+            if (!response.data.success) {
+                throw new Error('Không thể lấy dữ liệu');
+            }
+
+            const allOrders = response.data.data;
+
+            // Prepare data
+            const exportData = allOrders.map((order: Order, index: number) => {
+                const itemsDetail = order.items?.map((item: any) =>
+                    `${item.name || item.food?.name} (SL: ${item.quantity}, Giá: ${formatCurrency(item.price * item.quantity)})`
+                ).join('; ') || '';
+
+                return {
+                    'STT': index + 1,
+                    'Mã đơn hàng': order.order_code,
+                    'User ID': order.user_id,
+                    'Địa chỉ giao hàng': order.shipping_address || '',
+                    'Số món': order.items?.length || 0,
+                    'Chi tiết món ăn': itemsDetail,
+                    'Tạm tính': parseFloat(order.amount).toLocaleString('vi-VN') + ' ₫',
+                    'Phí vận chuyển': parseFloat(order.shipping_fee).toLocaleString('vi-VN') + ' ₫',
+                    'Tổng tiền': (parseFloat(order.amount) + parseFloat(order.shipping_fee || '0')).toLocaleString('vi-VN') + ' ₫',
+                    'Phương thức thanh toán': order.payment_method,
+                    'Trạng thái': order.payment_status,
+                    'Ngày thanh toán': formatDate(order.paid_at || order.created_at),
+                    'Ghi chú': order.description || ''
+                };
+            });
+
+            // Create workbook
+            const worksheet = XLSX.utils.json_to_sheet(exportData);
+            const workbook = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(workbook, worksheet, 'Tất cả đơn hàng');
+
+            // Set column widths
+            const columnWidths = [
+                { wch: 5 }, { wch: 15 }, { wch: 30 }, { wch: 35 }, { wch: 10 },
+                { wch: 50 }, { wch: 15 }, { wch: 15 }, { wch: 15 }, { wch: 15 },
+                { wch: 12 }, { wch: 18 }, { wch: 20 }
+            ];
+            worksheet['!cols'] = columnWidths;
+
+            // Export
+            const fileName = `TatCaDonHang_${new Date().toLocaleDateString('vi-VN').replace(/\//g, '-')}.xlsx`;
+            XLSX.writeFile(workbook, fileName);
+
+            alert(`✅ Đã xuất TẤT CẢ ${allOrders.length} đơn hàng ra file Excel!`);
+        } catch (error) {
+            console.error('Export all error:', error);
+            alert('❌ Không thể xuất file Excel. Vui lòng thử lại!');
+        } finally {
+            setLoading(false);
+        }
+    };
+
     const statCards = [
         {
             title: 'Tổng món ăn',
@@ -181,7 +313,31 @@ const Dashboard: React.FC = () => {
             {/* Orders List */}
             <div className="bg-slate-800/50 backdrop-blur-sm border border-white/10 rounded-2xl p-6">
                 <div className="flex items-center justify-between mb-6">
-                    <h3 className="text-xl font-bold text-white">Đơn hàng đã thanh toán</h3>
+                    <div className="flex items-center gap-4">
+                        <h3 className="text-xl font-bold text-white">Đơn hàng đã thanh toán</h3>
+
+                        {/* Export Buttons */}
+                        <button
+                            onClick={exportToExcel}
+                            disabled={loading || orders.length === 0}
+                            className="flex items-center gap-2 px-3 py-2 bg-emerald-500/20 text-emerald-300 rounded-lg hover:bg-emerald-500/30 transition-all disabled:opacity-50 disabled:cursor-not-allowed border border-emerald-500/50"
+                            title="Xuất trang hiện tại"
+                        >
+                            <Download size={16} />
+                            <span className="text-sm">Trang này</span>
+                        </button>
+
+                        <button
+                            onClick={exportAllOrders}
+                            disabled={loading || stats.totalOrders === 0}
+                            className="flex items-center gap-2 px-3 py-2 bg-blue-500/20 text-blue-300 rounded-lg hover:bg-blue-500/30 transition-all disabled:opacity-50 disabled:cursor-not-allowed border border-blue-500/50"
+                            title="Xuất tất cả đơn hàng"
+                        >
+                            <Download size={16} />
+                            <span className="text-sm">Tất cả ({stats.totalOrders})</span>
+                        </button>
+                    </div>
+
                     <span className="text-sm text-gray-400">
                         Trang {currentPage} / {totalPages}
                     </span>
