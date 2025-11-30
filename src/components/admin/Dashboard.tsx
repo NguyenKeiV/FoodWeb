@@ -203,10 +203,15 @@ const Dashboard: React.FC = () => {
                                         {/* Customer Info */}
                                         <div className="flex items-center gap-2 mb-2">
                                             <Users size={16} className="text-blue-400" />
-                                            <span className="text-white font-medium">
-                                                Khách hàng:
-                                                <span className="text-blue-400 ml-2">User ID: {order.user_id.substring(0, 8)}...</span>
+                                            <span className="text-gray-400 text-sm">Khách hàng:</span>
+                                            <span className="text-white font-semibold">
+                                                {order.user?.username || 'Không xác định'}
                                             </span>
+                                            {order.user?.email && (
+                                                <span className="text-gray-500 text-sm">
+                                                    ({order.user.email})
+                                                </span>
+                                            )}
                                         </div>
 
                                         {/* Shipping Address */}
